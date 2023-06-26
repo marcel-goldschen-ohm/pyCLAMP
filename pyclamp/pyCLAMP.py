@@ -35,7 +35,7 @@ import sys, os, re, ast, copy, json
 import numpy as np
 import scipy as sp
 import lmfit  # for curve fitting
-import PyQt6
+import PyQt6  # for the UI
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
