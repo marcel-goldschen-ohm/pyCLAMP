@@ -12,11 +12,12 @@ Not yet. Currently pyCLAMP can only view/analyze previously recorded data series
 # Why use pyCLAMP?
 As of now you still need a different program to aquire data anyway, and as pyCLAMP is in its infancy it is undoubtably the case that it cannot yet do everything that other programs such as pCLAMP can. So why use pyCLAMP at all?
 
-1. pyCLAMP saves your data in a simple self-describing and highly flexible and extensible data structure that is easily loaded and explored in Python or MATLAB and will always be retrievable independent of pyCLAMP. You will never have to rely on having access to specific recording software to analyze your data and you will have the power of Python or MATLAB at your fingertips to write whatever analysis code you want. See the section below on [pyCLAMP Data Structure](#pyclamp-data-structure).
-2. pyCLAMP provides a well designed UI for exploring and analyzing your data that in certain areas is already more feature rich than conventional alternatives.
-3. pyCLAMP already provides tools such as baseline fitting and detrending that are superior to the options in conventional alternatives, and which are still being developed further nonetheless.
-4. pyCLAMP is open source, so you have access to everything and can modify or customize the UI and analysis options to your liking. Please contribute your additions so that pyCLAMP's cababilities can grow for everyone. Eventually, pyCLAMP will be more powerful than the expensive closed source options that are currently available.
-5. Need a specific capability? Just ask for it and it may be provided in short order.
+1. pyCLAMP saves your data in a simple self-describing and highly flexible and extensible data structure that is easily loaded and explored and will always be retrievable independent of pyCLAMP ([see below for pyCLAMP Data Structure](#pyclamp-data-structure)). You will never have to rely on having access to specific recording software to analyze your data and you will have the power of Python or MATLAB at your fingertips to write whatever analysis code you want.
+2. pyCLAMP stores data in MATLAB `*.mat` file format for simple loading in either MATLAB or Python ([see below for MATLAB compatibillity](#matlab-compatibillity)).
+3. pyCLAMP provides a well designed UI for exploring and analyzing your data that in certain areas is already more feature rich than conventional alternatives.
+4. pyCLAMP already provides tools such as curve fitting, baseline detrending, statistics measurement, and event tagging.
+5. pyCLAMP is open source, so you have access to everything and can modify or customize the UI and analysis options to your liking. Please contribute your additions so that pyCLAMP's cababilities can grow for everyone. Eventually, pyCLAMP will be more powerful than other expensive closed source options that are currently available.
+6. Need a specific capability? Just ask for it and it may be provided in short order.
 
 # INSTALL pyCLAMP
 `pip install pyclamp`
@@ -32,12 +33,12 @@ This should install everything you need including all requirements.
 * [qtawesome](https://github.com/spyder-ide/qtawesome)
 
 # Run the pyCLAMP UI
-Just run the command `python -m pyclamp` to bring up the UI.
+`python -m pyclamp`
 
 # pyCLAMP Data Structure
 - Data is stored as nested dictionaries or lists of dictionaries for maximum flexiblity and extensibility.
     - Need new functionality? Just add a new key at whichever level of the heirarchy is appropriate.
-    - The data is entirely composed only of `dict`, `list`, `str`, `int`, `float`, and numpy `ndarray` values and thus can be easily serialized to JSON, .MAT, etc.
+    - The data is entirely composed only of `dict`, `list`, `str`, `int`, `float`, and numpy `ndarray` values and thus can be easily serialized to JSON, `.mat`, etc.
     - The data is entirely self-describing and can be easily explored and manipulated independent of the UI or any other code in this package.
 - Data series traces are organized heirarchically by episode, channel, trace which should cover most experimental recording paradigms.
     - EPISODE: A single recording sweep.
@@ -97,6 +98,7 @@ EVENT = {
     'Text': event info
 }
 ```
+Style dicts define a trace's plot style in the UI.
 ```python
 STYLE = {
     'Type': 'Style'
@@ -114,20 +116,24 @@ For example, to access the *kth* trace in the *jth* channel for the *ith* episod
 ```python
 DATA['Episodes'][i]['Channels'][j]['Traces'][k]['YData'] = ...
 ```
-Because all `dict` objects are passed by reference, it is generally simpler to store references to desired objects and then manipulate their data through these refereces:
+Because all `dict` objects are passed by reference, it is generally simpler to store references to objects and then manipulate their data through these refereces:
 ```python
 TRACE = DATA['Episodes'][i]['Channels'][j]['Traces'][k]
 TRACE['YData'] = ...
 ```
 If the above trace contained a fit curve as its first child trace, then you would access the data in the fit curve as:
 ```python
-TRACE['Traces'][0]['YData'] = ...
+fit = TRACE['Traces'][0]
+fit['YData'] = ...
 ```
 Similarly, to access the *kth* event in the *jth* channel for the *ith* episode:
 ```python
 EVENT = DATA['Episodes'][i]['Channels'][j]['Events'][k]
 EVENT['XStart'] = ...
 ```
-References from child to parent dict objects are stored separately from the data structure itself in a list of `(CHILD, PARENT)` tuples. These are very useful for manipulating the data structure, but are not required and can be derived from the data structure as needed. Were they to be included in the data structure itself, then they would prevent simple serialization to JSON, .MAT, etc.
+References from child to parent dict objects are stored separately from the data structure itself in a list of `(CHILD, PARENT)` tuples. These are very useful for manipulating the data structure, but are not required and can be derived from the data structure as needed. Were they to be included in the data structure itself, then they would prevent simple serialization to JSON, `.mat`, etc.
 
 !!! *If you manipulate the data structure with custom code, then it is up to you to insure that these `(CHILD, PARENT)` references are up-to-date for the UI to work as expected.* Note that `DataModel.refreshParents()` will refresh these references for the entire data structure whenever needed.
+
+# MATLAB compatibillity
+The data structure is serialized/deserialized to/from MATLAB `.mat` file format so that it can be easily loaded in MATLAB if desired. Nested dicts and lists of dicts in Python become nested structs and structarrays in MATLAB. To load in python see the function `DataModel.loadmat()` which uses `scipy.loadmat()` to load the data from a previously serialized `.mat` file. The load function also strips the data of uneeded MATLAB-specific tokens (which is nice but does not affect the actual data) and ensures that certain objects are lists of dicts rather than a simple dict. The latter is required for the UI to function correctly, but it is NOT required to explore the dataset and understand its structure or access its contents.
