@@ -43,6 +43,7 @@ setup(
     ### Dependencies
 
     install_requires=[
+        'PyQt6',
         'numpy',
         'scipy',
         'lmfit',

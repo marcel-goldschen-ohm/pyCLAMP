@@ -36,9 +36,10 @@ import sys, os, re, ast, copy, json
 import numpy as np
 import scipy as sp
 import lmfit  # for curve fitting
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+import PyQt6
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 import pyqtgraph as pg  # for plots: https://www.pyqtgraph.org
 import qtawesome as qta  # for some nice icons: https://github.com/spyder-ide/qtawesome
 from DataModel import *  # !!! defines the data model for pyCLAMP
@@ -493,8 +494,6 @@ class pyCLAMP(QWidget):
                     traceItem.setData(x=xdata, y=ydata)
                 else:
                     # add new plot trace
-                    print(xdata.shape, xdata.dtype, ydata.shape, ydata.dtype)
-                    print(xdata, ydata)
                     traceItem = PlotDataItem(x=xdata, y=ydata)
                     channelPlot.addItem(traceItem)
                     traceItems.append(traceItem)
@@ -2374,27 +2373,27 @@ if __name__ == '__main__':
     # Create widget
     ui = newPyClampWindow()
 
-    ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,2,100)))
-    ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['Name'] = 'test'
-    ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['YZero'] = 0.5
-    ui.data.DATA['Episodes'][0]['Channels'][0]['Events'] = [
-        {
-            'Type': 'Event',
-            'Group': 'group',
-            'XStart': 50,
-            'XStop': 60,
-            'Text': 'event 1'
-        },
-        {
-            'Type': 'Event',
-            'Group': 'group',
-            'XStart': 20,
-            'Text': 'event 2'
-        }
-    ]
-    ui.data.refreshParents()
+    # ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,2,100)))
+    # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['Name'] = 'test'
+    # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['YZero'] = 0.5
+    # ui.data.DATA['Episodes'][0]['Channels'][0]['Events'] = [
+    #     {
+    #         'Type': 'Event',
+    #         'Group': 'group',
+    #         'XStart': 50,
+    #         'XStop': 60,
+    #         'Text': 'event 1'
+    #     },
+    #     {
+    #         'Type': 'Event',
+    #         'Group': 'group',
+    #         'XStart': 20,
+    #         'Text': 'event 2'
+    #     }
+    # ]
+    # ui.data.refreshParents()
 
-    ui.dump('DATA.txt')
+    # ui.dump('DATA.txt')
 
     # Show widget and run application
     ui.show()
