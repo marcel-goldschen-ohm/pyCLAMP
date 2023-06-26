@@ -3,7 +3,6 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
-- !!! use refactored DataModel !!! bug in trace display
 - option to not fit overlay traces
 - export trace to new window
 - trace x/y table
@@ -183,6 +182,8 @@ class pyCLAMP(QWidget):
                     CHANNEL['Traces'].append(TRACE)
         self.data.setData(DATA)
         self.updateUI()
+        path, filename = os.path.split(filepath)
+        self.setWindowTitle(filename)
     
     def initUI(self):
         self.initMainMenu()
@@ -2368,7 +2369,7 @@ def styleDialog(parentWidget, STYLE:dict, defaultColor=QColor('transparent')):
 if __name__ == '__main__':
     # Create the application
     app = QApplication(sys.argv)
-    app.setStyle('Fusion')
+    # app.setStyle('Fusion')
 
     # Create widget
     ui = newPyClampWindow()

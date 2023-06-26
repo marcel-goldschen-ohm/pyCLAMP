@@ -417,10 +417,11 @@ class DataModel():
         self.DATA['Notes'] = notes
     
     def savemat(self, filepath):
-        sp.io.savemat(filepath, **self.DATA)
+        sp.io.savemat(filepath, {'DATA': self.DATA})
 
-    def loadmat(slef, filepath):
-        self.DATA = sp.io.loadmat(filepath, simplify_cells=True)
+    def loadmat(self, filepath):
+        DATA = sp.io.loadmat(filepath, simplify_cells=True)
+        self.DATA = DATA['DATA']
         
         # Remove special keys added by loadmat.
         keys = tuple(self.DATA.keys())
@@ -582,20 +583,3 @@ if __name__ == '__main__':
         {'Type': 'Trace', 'Name': 'Fit', 'YData': np.random.random(5)},
     ]
     dataModel.dump()
-
-    # from PyQtTreeModel import *
-
-    # model = TreeModel(dataModel.DATA, ['Name', 'XData', 'YData', 'XLabel', 'YLabel', 'XUnit', 'YUnit', 'XZero', 'YZero', 'Mask', 'Style'])
-
-    # # tester = QAbstractItemModelTester(model)
-
-    # view = QTreeView()
-    # view.setModel(model)
-    # view.expandRecursively(QModelIndex(), -1)
-    # for column in range(model.columnCount()):
-    #     view.resizeColumnToContents(column)
-    # view.show()
-
-    # # run application
-    # status = app.exec()
-    # sys.exit(status)
