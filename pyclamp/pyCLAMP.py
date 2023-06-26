@@ -3,14 +3,22 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
+- show empty plot when there is no data?
+- Fusion style or another or none?
+- Menu section titles not showing when fusion style not set?
+- tile groups horizontally in visibility widget menu?
+- distribute/stack traces vertically (or 3-D effect with both vertical and horizontal offset)
+- events for all traces in an episode defined at episode level, etc.
 - option to not fit overlay traces
 - export trace to new window
 - trace x/y table
 - curve fit option to specify xfit as linspace or logspace
 - trace mask
+- yscale
 - selection list boxes not always growing vertically to fit content?
 - option to show all episodes/traces in background
     - can click to select background trace?
+- managing colormaps?
 - persistent baseline style?
 - filtering?
 - wrap trace (e.g., for single channel analysis?), or maybe this is best left to its own special UI?
@@ -41,13 +49,13 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 import pyqtgraph as pg  # for plots: https://www.pyqtgraph.org
 import qtawesome as qta  # for some nice icons: https://github.com/spyder-ide/qtawesome
-from .DataModel import *  # !!! defines the data model for pyCLAMP
+from pyclamp.DataModel import *  # !!! defines the data model for pyCLAMP
 
 try:
     # OPTIONAL: For importing HEKA data files.
     # https://github.com/campagnola/heka_reader
     # e.g., Just put heka_reader.py in the same directory as this file.
-    from . import heka_reader
+    from pyclamp import heka_reader
 except ImportError:
     heka_reader = None
 
@@ -234,6 +242,8 @@ class pyCLAMP(QWidget):
         self._episodeSelectionBox = MultiIndexSpinBox()
         self._episodeSelectionBox.setToolTip('Selected Episode(s)')
         self._episodeSelectionBox.valuesChanged.connect(self.updateChannelPlots)
+        # self._episodeRangeText = QLabel('of 0')
+        # self._episodeRangeText.setToolTip('# of Episodes')
 
         # channel selection
         self._channelSelectionList = ListWidget()
@@ -245,6 +255,8 @@ class pyCLAMP(QWidget):
         self._traceSelectionBox = MultiIndexSpinBox()
         self._traceSelectionBox.setToolTip('Selected Trace(s)')
         self._traceSelectionBox.valuesChanged.connect(self.updateChannelPlots)
+        # self._traceRangeText = QLabel('of 0')
+        # self._traceRangeText.setToolTip('# of Traces')
 
         # trace name selection
         self._traceNameSelectionList = ListWidget()
@@ -351,11 +363,13 @@ class pyCLAMP(QWidget):
 
         # toolbar
         self._toolbar = QToolBar()
-        self._mainMenuButtonAction = self._toolbar.addWidget(self._mainMenuButton)
+        self._toolbar.addWidget(self._mainMenuButton)
         self._episodeSelectionBoxAction = self._toolbar.addWidget(self._episodeSelectionBox)
+        # self._episodeRangeTextAction = self._toolbar.addWidget(self._episodeRangeText)
         self._traceSelectionBoxAction = self._toolbar.addWidget(self._traceSelectionBox)
-        self._visibilityButtonAction = self._toolbar.addWidget(self._visibilityButton)
-        self._notesButtonAction = self._toolbar.addWidget(self._notesButton)
+        # self._traceRangeTextAction = self._toolbar.addWidget(self._traceRangeText)
+        self._toolbar.addWidget(self._visibilityButton)
+        self._toolbar.addWidget(self._notesButton)
     
     def sizeHint(self):
         return QSize(800, 600)
@@ -365,6 +379,8 @@ class pyCLAMP(QWidget):
         n_episodes = self.data.numEpisodes()
         self._episodeSelectionBoxAction.setVisible(n_episodes > 1)
         self._episodeSelectionBox.setMaximum(max(0, n_episodes - 1))
+        # self._episodeRangeTextAction.setVisible(n_episodes > 1)
+        # self._episodeRangeText.setText(f'of {n_episodes}')
 
         # channel selection
         self.updateChannelSelectionList()
@@ -373,6 +389,8 @@ class pyCLAMP(QWidget):
         nmax_traces = self.data.numTraces()
         self._traceSelectionBoxAction.setVisible(nmax_traces > 1)
         self._traceSelectionBox.setMaximum(max(0, nmax_traces - 1))
+        # self._traceRangeTextAction.setVisible(nmax_traces > 1)
+        # self._traceRangeText.setText(f'of {nmax_traces}')
         
         # trace name selection
         self.updateTraceNameSelectionList()
@@ -560,6 +578,10 @@ class pyCLAMP(QWidget):
         # link x-axis across channel plots
         for j in range(1, len(channelPlots)):
             channelPlots[j].setXLink(channelPlots[0])
+        
+        # show an empty plot when there is no data
+        if not channelPlots:
+            self._channelPlotsLayout.addWidget(PlotWidget(), stretch=1)
 
     def selectedChannels(self):
         selectedChannels = [index.row() for index in self._channelSelectionList.selectedIndexes()]
@@ -2374,7 +2396,7 @@ if __name__ == '__main__':
     # Create widget
     ui = newPyClampWindow()
 
-    # ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,2,100)))
+    # ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,2,3,100)))
     # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['Name'] = 'test'
     # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['YZero'] = 0.5
     # ui.data.DATA['Episodes'][0]['Channels'][0]['Events'] = [

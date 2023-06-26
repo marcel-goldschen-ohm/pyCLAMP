@@ -1,7 +1,7 @@
 
 import sys
 from PyQt6.QtWidgets import QApplication
-from . import pyCLAMP
+from pyclamp import pyCLAMP
 
 # Create the application
 app = QApplication(sys.argv)

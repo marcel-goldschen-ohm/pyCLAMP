@@ -31,9 +31,18 @@ This should install everything you need including all requirements.
 * [PyQt6](https://pypi.org/project/PyQt6/)
 * [pyqtgraph](https://www.pyqtgraph.org)
 * [qtawesome](https://github.com/spyder-ide/qtawesome)
+* [pyABF](https://swharden.com/pyabf/)
 
 # Run the pyCLAMP UI
 `python -m pyclamp`
+
+Once the UI appears, open the menu (button in the upper left corner) and select `File -> Open` or `File -> Import ...`
+
+# Data file compatibility
+- **Axon Binary File (ABF)**: Uses [pyABF](https://swharden.com/pyabf/) to import. <-- under construction
+- **HEKA PatchMaster data file**: Uses [heka_reader](https://github.com/campagnola/heka_reader) to import.
+
+More to come here...
 
 # pyCLAMP Data Structure
 - Data is stored as nested dictionaries or lists of dictionaries for maximum flexiblity and extensibility.
@@ -82,7 +91,8 @@ TRACE = {
     'XUnit': x-axis unit
     'YUnit': y-axis unit
     'XZero': x-axis zero point, XData -> XData - XZero
-    'YZero': baseline ndarray[sample] OR constant, YData -> YData - YZero
+    'YZero': ndarray[sample] OR constant baseline, YData -> YData - YZero
+    'YScale': ndarray[sample] OR constant scale factor, YData -> YData * YScale
     'Mask': logical mask, YData -> YData[Mask]
     'Style': STYLE
     'Traces': [TRACE, ...]
