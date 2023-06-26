@@ -9,7 +9,7 @@ setup(
 
     ### Metadata
 
-    name='pyCLAMP',
+    name='pyclamp',
 
     version='0.0.1',
 
