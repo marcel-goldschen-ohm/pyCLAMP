@@ -32,7 +32,7 @@ This should install everything you need including all requirements.
 * [qtawesome](https://github.com/spyder-ide/qtawesome)
 
 # Run the pyCLAMP UI
-Just run the command `pyclamp` to bring up the UI.
+Just run the command `python -m pyclamp` to bring up the UI.
 
 # pyCLAMP Data Structure
 - Data is stored as nested dictionaries or lists of dictionaries for maximum flexiblity and extensibility.

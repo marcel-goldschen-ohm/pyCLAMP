@@ -1,14 +1,14 @@
 
 import sys
 from PyQt6.QtWidgets import QApplication
-from pyCLAMP import *
+from . import pyCLAMP
 
 # Create the application
 app = QApplication(sys.argv)
 # app.setStyle('Fusion')
 
 # Create the UI widget
-ui = newPyClampWindow()
+ui = pyCLAMP.newPyClampWindow()
 
 # Show UI widget and run application
 ui.show()

@@ -16,7 +16,7 @@ setup(
     description='Time series recordings analysis in Python with UI similar to pCLAMP.',
 
     long_description=(HERE / "README.md").read_text(),
-    long_desc_type = "text/markdown",
+    long_description_content_type = "text/markdown",
 
     url='https://github.com/marcel-goldschen-ohm/pyCLAMP',
 
@@ -37,7 +37,7 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Topic :: Scientific/Engineering :: Build Tools',
+        'Topic :: Scientific/Engineering'
     ],
 
     ### Dependencies

@@ -41,13 +41,13 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 import pyqtgraph as pg  # for plots: https://www.pyqtgraph.org
 import qtawesome as qta  # for some nice icons: https://github.com/spyder-ide/qtawesome
-from DataModel import *  # !!! defines the data model for pyCLAMP
+from .DataModel import *  # !!! defines the data model for pyCLAMP
 
 try:
     # OPTIONAL: For importing HEKA data files.
     # https://github.com/campagnola/heka_reader
     # e.g., Just put heka_reader.py in the same directory as this file.
-    import heka_reader
+    from . import heka_reader
 except ImportError:
     heka_reader = None
 
