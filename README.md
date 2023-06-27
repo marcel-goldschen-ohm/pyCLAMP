@@ -19,7 +19,7 @@ As of now you still need a different program to aquire data anyway, and as pyCLA
 5. pyCLAMP is open source, so you have access to everything and can modify or customize the UI and analysis options to your liking. Please contribute your additions so that pyCLAMP's cababilities can grow for everyone. Eventually, pyCLAMP will be more powerful than other expensive closed source options that are currently available.
 6. Need a specific capability? Just ask for it and it may be provided in short order.
 
-# INSTALL pyCLAMP
+# Install pyCLAMP
 `pip install pyclamp`
 
 This should install everything you need including all requirements.
@@ -39,10 +39,11 @@ This should install everything you need including all requirements.
 Once the UI appears, open the menu (button in the upper left corner) and select `File -> Open` or `File -> Import ...`
 
 # Data file compatibility
-- **Axon Binary File (ABF)**: Uses [pyABF](https://swharden.com/pyabf/) to import. <-- under construction
-- **HEKA PatchMaster data file**: Uses [heka_reader](https://github.com/campagnola/heka_reader) to import.
-
-More to come here...
+| File Type | Import | Export |
+| --------- | ------ | ------ |
+| Axon Binary File (ABF) | under construction: [pyABF](https://swharden.com/pyabf/) | |
+| HEKA PatchMaster | [heka_reader](https://github.com/campagnola/heka_reader) | |
+| WinWCP | | |
 
 # pyCLAMP Data Structure
 - Data is stored as nested dictionaries or lists of dictionaries for maximum flexiblity and extensibility.
