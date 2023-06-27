@@ -16,8 +16,9 @@ As of now you still need a different program to aquire data anyway, and as pyCLA
 2. pyCLAMP stores data in MATLAB `*.mat` file format for simple loading in either MATLAB or Python ([see below for pyCLAMP data in Python and MATLAB](#pyclamp-data-in-python-and-matlab)).
 3. pyCLAMP provides a well designed UI for exploring and analyzing your data that in certain areas is already more feature rich than conventional alternatives.
 4. pyCLAMP already provides tools such as curve fitting, baseline detrending, statistics measurement, and event tagging.
-5. pyCLAMP is open source, so you have access to everything and can modify or customize the UI and analysis options to your liking. Please contribute your additions so that pyCLAMP's cababilities can grow for everyone. Eventually, pyCLAMP will be more powerful than other expensive closed source options that are currently available.
+5. pyCLAMP is open source and entirely in Python, so with a bit of Python know how you can easily modify or customize anything to your liking. The UI is entirely in PyQt, so it is also fairly simple to customize the UI as you see fit. Please contribute your additions so that pyCLAMP's cababilities can grow for everyone.
 6. Need a specific capability? Just ask for it and it may be provided in short order.
+7. pyCLAMP is under active development, so check back often to see what's improved!
 
 # Install pyCLAMP
 `pip install pyclamp`
@@ -57,7 +58,7 @@ Once the UI appears, open the menu (button in the upper left corner) and select 
                 - Overlay TRACE: A single data trace associated with a parent trace (e.g., fit, measurement, etc.).
             - EVENT: A labeled x-axis interval.
 - For memory efficiency any data arrays that are shared amongst traces (e.g., XData) should all be references/views to the same shared array. These should generally be numpy ndarrays.
-- In most cases each (EPISODE,CHANNEL) pair will have only a single TRACE and all fits, etc. will be handled with overlaid child traces. Multiple TRACEs per (EPISODE,CHANNEL) pair are for things like triggered recordings of variable segments within each sweep.
+- In most cases each (EPISODE, CHANNEL) pair will contain a list with only a single trace (i.e., `CHANNEL['Traces'] = [TRACE]`) and all fits, etc. will be handled with overlaid child traces of that single trace. Multiple traces per (EPISODE, CHANNEL) pair (i.e., `CHANNEL['Traces'] = [TRACE, TRACE, ...]`) are for things like triggered recordings of multiple segments within each sweep.
 
 The basic tree structure of nested dictionary objects or lists of dictionary objects:
 
@@ -118,7 +119,7 @@ STYLE = {
     'LineWidth': (defaults to 1)
     'Marker': one of ['none', 'o', 't', 't1', 't2', 't3', 's', 'p', 'h', 'star', '+', 'd', 'x'] (defaults to 'none')
     'MarkerSize': (defaults to 10)
-    'MarkerEdgeWidth': (defaults to linewidth)
+    'MarkerEdgeWidth': (defaults to LineWidth)
     'MarkerEdgeColor': (r, g, b) or (r, g, b, a) in 0-255 or 'auto' (defaults to 'auto' => Color)
     'MarkerFaceColor': (r, g, b) or (r, g, b, a) in 0-255 or 'auto' (defaults to 'auto' => MarkerEdgeColor with alpha=0)
 }

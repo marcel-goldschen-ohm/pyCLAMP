@@ -3,6 +3,9 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
+- requirements.txt
+- auto detect and fix single dict -> list of dict where necessary
+    - anyway to ensure this via scipy.loadmat? probably not though
 - autoscale all plots
 - Fusion style or another or none?
 - Menu section titles not showing when fusion style not set?
@@ -19,6 +22,7 @@ TODO:
     - can click to select background trace?
 - managing colormaps?
 - persistent baseline style?
+- set global styles?
 - filtering?
 - wrap trace (e.g., for single channel analysis?), or maybe this is best left to its own special UI?
 - fix ylabel overlapping ytick labels due to fixed left axis width
