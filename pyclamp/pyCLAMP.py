@@ -3,7 +3,7 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
-- requirements.txt
+- use HDF5 data format instead of MATLAB format?
 - auto detect and fix single dict -> list of dict where necessary
     - anyway to ensure this via scipy.loadmat? probably not though
 - autoscale all plots
