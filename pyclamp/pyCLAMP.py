@@ -3,15 +3,14 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
-- x-tick labels only on bottom plot
+- autoscale all plots
 - Fusion style or another or none?
 - Menu section titles not showing when fusion style not set?
-- tile groups horizontally in visibility widget menu?
 - distribute/stack traces vertically (or 3-D effect with both vertical and horizontal offset)
 - events for all traces in an episode defined at episode level, etc.
 - option to not fit overlay traces
 - export trace to new window
-- trace x/y table
+- trace x/y table(s)
 - curve fit option to specify xfit as linspace or logspace
 - trace mask
 - yscale
@@ -28,7 +27,7 @@ TODO:
 - curve fit fixed parameters
 - curve fit constraint expressions
 - baseline nodes (allow manual adjustment of baseline)
-- select a single trace (while displaying multiple)???
+- left click to select a single trace (while displaying multiple)?
 - reorder channels???
 - reorder trace names???
 - aquisition???
@@ -562,12 +561,15 @@ class pyCLAMP(QWidget):
             channelPlot.deleteLater()
 
         # left align visible channel plot axes
+        # only show xtick lables for the bottom visible plot
         visibleChannelPlots = [plot for plot in channelPlots if plot.isVisible()]
         if visibleChannelPlots:
             leftAxisWidths = [plot.getAxis('left').width() for plot in visibleChannelPlots]
             leftAxisWidth = np.max(leftAxisWidths)
             for plot in visibleChannelPlots:
                 plot.getAxis('left').setWidth(leftAxisWidth)
+                showXTickLabels = plot is visibleChannelPlots[-1]
+                plot.getAxis('bottom').setStyle(showValues=showXTickLabels)
 
         # link x-axis across channel plots
         for j in range(1, len(channelPlots)):
