@@ -149,3 +149,37 @@ References from child to parent dict objects are stored separately from the data
 
 # pyCLAMP data in Python and MATLAB
 The data structure is serialized/deserialized to/from MATLAB `.mat` file format so that it can be easily loaded in MATLAB if desired. Nested dicts and lists of dicts in Python become nested structs and structarrays in MATLAB. To load in python see the function `DataModel.loadmat()` which uses `scipy.loadmat()` to load the data from a previously serialized `.mat` file. The load function also strips the data of uneeded MATLAB-specific tokens (which is nice but does not affect the actual data) and ensures that certain objects are lists of dicts rather than a simple dict. The latter is required for the UI to function correctly, but it is NOT required to explore the dataset and understand its structure or access its contents.
+
+# TODO
+- use HDF5 data format instead of MATLAB format?
+- auto detect and fix single dict -> list of dict where necessary
+    - anyway to ensure this via scipy.loadmat? probably not though
+- autoscale all plots
+- Fusion style or another or none?
+- Menu section titles not showing when fusion style not set?
+- distribute/stack traces vertically (or 3-D effect with both vertical and horizontal offset)
+- events for all traces in an episode defined at episode level, etc.
+- option to not fit overlay traces
+- export trace to new window
+- trace x/y table(s)
+- curve fit option to specify xfit as linspace or logspace
+- trace mask
+- yscale
+- selection list boxes not always growing vertically to fit content?
+- option to show all episodes/traces in background
+    - can click to select background trace?
+- managing colormaps?
+- persistent baseline style?
+- set global styles?
+- filtering?
+- wrap trace (e.g., for single channel analysis?), or maybe this is best left to its own special UI?
+- fix ylabel overlapping ytick labels due to fixed left axis width
+    - if left axes can autosize again will have to left-align axes after each zoom/pan
+- test curve fit bounds
+- curve fit fixed parameters
+- curve fit constraint expressions
+- baseline nodes (allow manual adjustment of baseline)
+- left click to select a single trace (while displaying multiple)?
+- reorder channels???
+- reorder trace names???
+- aquisition???
