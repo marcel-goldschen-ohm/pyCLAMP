@@ -308,6 +308,9 @@ class DataModel():
                                         if 'YLabel' in TRACE:
                                             names[j] = TRACE['YLabel']
                                             continue
+        for j, name in enumerate(names):
+            if name is None:
+                names[j] = f'Channel {j}'
         return names
     
     def traceNames(self, episodeIndexes=None, channelIndexes=None, traceIndexes=None, 

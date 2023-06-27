@@ -3,7 +3,7 @@ View and analyze time series recordings similar to pCLAMP.
 
 
 TODO:
-- show empty plot when there is no data?
+- x-tick labels only on bottom plot
 - Fusion style or another or none?
 - Menu section titles not showing when fusion style not set?
 - tile groups horizontally in visibility widget menu?
@@ -242,112 +242,110 @@ class pyCLAMP(QWidget):
         self._episodeSelectionBox = MultiIndexSpinBox()
         self._episodeSelectionBox.setToolTip('Selected Episode(s)')
         self._episodeSelectionBox.valuesChanged.connect(self.updateChannelPlots)
-        # self._episodeRangeText = QLabel('of 0')
-        # self._episodeRangeText.setToolTip('# of Episodes')
+
+        self._episodeSelectionGroupBox = QGroupBox('Episode')
+        hbox = QHBoxLayout(self._episodeSelectionGroupBox)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setSpacing(0)
+        hbox.addWidget(self._episodeSelectionBox)
 
         # channel selection
         self._channelSelectionList = ListWidget()
         self._channelSelectionList.setSelectionMode(QAbstractItemView.MultiSelection)
         self._channelSelectionList.itemSelectionChanged.connect(self.onChannelSelectionChanged)
-        self._channelSelectionList.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+        self._channelSelectionGroupBox = QGroupBox('Channel')
+        vbox = QVBoxLayout(self._channelSelectionGroupBox)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        vbox.addWidget(self._channelSelectionList)
         
         # trace selection
         self._traceSelectionBox = MultiIndexSpinBox()
         self._traceSelectionBox.setToolTip('Selected Trace(s)')
         self._traceSelectionBox.valuesChanged.connect(self.updateChannelPlots)
-        # self._traceRangeText = QLabel('of 0')
-        # self._traceRangeText.setToolTip('# of Traces')
+
+        self._traceSelectionGroupBox = QGroupBox('Trace')
+        hbox = QHBoxLayout(self._traceSelectionGroupBox)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setSpacing(0)
+        hbox.addWidget(self._traceSelectionBox)
 
         # trace name selection
         self._traceNameSelectionList = ListWidget()
         self._traceNameSelectionList.setSelectionMode(QAbstractItemView.MultiSelection)
         self._traceNameSelectionList.itemSelectionChanged.connect(self.onTraceNameSelectionChanged)
-        self._traceNameSelectionList.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+        self._traceNameSelectionGroupBox = QGroupBox('Trace Name')
+        vbox = QVBoxLayout(self._traceNameSelectionGroupBox)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        vbox.addWidget(self._traceNameSelectionList)
 
         # baseline
-        self._showBaselineCheckBox = QCheckBox('Show Baseline')
+        self._showBaselineCheckBox = QCheckBox('Show baseline')
         self._showBaselineCheckBox.setChecked(True)
         self._showBaselineCheckBox.stateChanged.connect(self.updateChannelPlots)
-        self._applyBaselineCheckBox = QCheckBox('Apply Baseline')
+        
+        self._applyBaselineCheckBox = QCheckBox('Apply baseline')
         self._applyBaselineCheckBox.setChecked(False)
         self._applyBaselineCheckBox.stateChanged.connect(self.updateChannelPlots)
 
+        self._baselineGroupBox = QGroupBox('Baseline')
+        vbox = QVBoxLayout(self._baselineGroupBox)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        vbox.addWidget(self._showBaselineCheckBox)
+        vbox.addWidget(self._applyBaselineCheckBox)
+
         # events
-        self._showEventsCheckBox = QCheckBox('Show Events')
+        self._showEventsCheckBox = QCheckBox('Show events')
         self._showEventsCheckBox.setChecked(True)
         self._showEventsCheckBox.stateChanged.connect(self.updateChannelPlots)
 
-        # show all episode traces in background
-        self._showAllPrimaryTracesInBackgroundCheckBox = QCheckBox('Show All Traces in Background')
+        self._eventsGroupBox = QGroupBox('Events')
+        vbox = QVBoxLayout(self._eventsGroupBox)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        vbox.addWidget(self._showEventsCheckBox)
+
+        # display options
+        self._showAllPrimaryTracesInBackgroundCheckBox = QCheckBox('Show all traces in background')
         self._showAllPrimaryTracesInBackgroundCheckBox.setChecked(False)
         self._showAllPrimaryTracesInBackgroundCheckBox.stateChanged.connect(self.updateChannelPlots)
 
-        # visible objects selection
-        self._visibilityMenu = QMenu()
-        
-        self._visibilityMenu.addSection('Channels')
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 5, 5, 15)
-        vbox.setSpacing(5)
-        vbox.addWidget(self._channelSelectionList)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._visibilityMenu.addAction(action)
-        
-        self._visibilityMenu.addSection('Trace Names')
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 5, 5, 15)
-        vbox.setSpacing(5)
-        vbox.addWidget(self._traceNameSelectionList)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._visibilityMenu.addAction(action)
-        
-        self._visibilityMenu.addSection('Options')
-        # self._visibilityMenu.addSection('Baseline')
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 0, 0, 0)
-        vbox.setSpacing(5)
-        vbox.addWidget(self._showBaselineCheckBox)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._visibilityMenu.addAction(action)
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 0, 0, 15)
-        vbox.setSpacing(5)
-        vbox.addWidget(self._applyBaselineCheckBox)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._visibilityMenu.addAction(action)
-        
-        # self._visibilityMenu.addSection(' ')
-        # self._visibilityMenu.addSection('Events')
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 0, 0, 15)
-        vbox.setSpacing(5)
-        vbox.addWidget(self._showEventsCheckBox)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._visibilityMenu.addAction(action)
+        self._tileTracesVerticallyCheckBox = QCheckBox('Tile traces vertically')
+        self._tileTracesVerticallyCheckBox.setChecked(False)
+        self._tileTracesVerticallyCheckBox.stateChanged.connect(self.updateChannelPlots)
 
-        # self._visibilityMenu.addSection(' ')
-        self._moreVisibilityOptionsMenu = QMenu('More Options')
-
-        wrapper = QWidget()
-        vbox = QVBoxLayout(wrapper)
-        vbox.setContentsMargins(25, 0, 0, 15)
-        vbox.setSpacing(5)
+        self._displayGroupBox = QGroupBox('Display')
+        vbox = QVBoxLayout(self._displayGroupBox)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
         vbox.addWidget(self._showAllPrimaryTracesInBackgroundCheckBox)
-        action = QWidgetAction(wrapper)
-        action.setDefaultWidget(wrapper)
-        self._moreVisibilityOptionsMenu.addAction(action)
+        vbox.addWidget(self._tileTracesVerticallyCheckBox)
 
-        self._visibilityMenu.addMenu(self._moreVisibilityOptionsMenu)
+        # visible objects selection
+        self._visibilityOptionsWidget = QWidget()
+        hbox = QHBoxLayout(self._visibilityOptionsWidget)
+        hbox.setContentsMargins(5, 5, 5, 5)
+        hbox.setSpacing(10)
+        hbox.addWidget(self._channelSelectionGroupBox)
+        hbox.addWidget(self._traceNameSelectionGroupBox)
+
+        vbox = QVBoxLayout()
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(30)
+        vbox.addWidget(self._baselineGroupBox)
+        vbox.addWidget(self._eventsGroupBox)
+        vbox.addWidget(self._displayGroupBox)
+        vbox.addStretch()
+        hbox.addLayout(vbox)
+
+        self._visibilityMenu = QMenu()
+        action = QWidgetAction(self._visibilityOptionsWidget)
+        action.setDefaultWidget(self._visibilityOptionsWidget)
+        self._visibilityMenu.addAction(action)
 
         self._visibilityButton = QToolButton()
         self._visibilityButton.setIcon(qta.icon('ph.eye'))
@@ -364,10 +362,8 @@ class pyCLAMP(QWidget):
         # toolbar
         self._toolbar = QToolBar()
         self._toolbar.addWidget(self._mainMenuButton)
-        self._episodeSelectionBoxAction = self._toolbar.addWidget(self._episodeSelectionBox)
-        # self._episodeRangeTextAction = self._toolbar.addWidget(self._episodeRangeText)
-        self._traceSelectionBoxAction = self._toolbar.addWidget(self._traceSelectionBox)
-        # self._traceRangeTextAction = self._toolbar.addWidget(self._traceRangeText)
+        self._episodeSelectionToolbarAction = self._toolbar.addWidget(self._episodeSelectionGroupBox)
+        self._traceSelectionToolbarAction = self._toolbar.addWidget(self._traceSelectionGroupBox)
         self._toolbar.addWidget(self._visibilityButton)
         self._toolbar.addWidget(self._notesButton)
     
@@ -377,20 +373,18 @@ class pyCLAMP(QWidget):
     def updateUI(self):
         # episode selection
         n_episodes = self.data.numEpisodes()
-        self._episodeSelectionBoxAction.setVisible(n_episodes > 1)
+        self._episodeSelectionToolbarAction.setVisible(n_episodes > 1)
         self._episodeSelectionBox.setMaximum(max(0, n_episodes - 1))
-        # self._episodeRangeTextAction.setVisible(n_episodes > 1)
-        # self._episodeRangeText.setText(f'of {n_episodes}')
+        self._episodeSelectionGroupBox.setTitle(f'Episode / 0-{n_episodes-1}')
 
         # channel selection
         self.updateChannelSelectionList()
 
         # trace selection
         nmax_traces = self.data.numTraces()
-        self._traceSelectionBoxAction.setVisible(nmax_traces > 1)
+        self._traceSelectionToolbarAction.setVisible(nmax_traces > 1)
         self._traceSelectionBox.setMaximum(max(0, nmax_traces - 1))
-        # self._traceRangeTextAction.setVisible(nmax_traces > 1)
-        # self._traceRangeText.setText(f'of {nmax_traces}')
+        self._traceSelectionGroupBox.setTitle(f'Trace / 0-{nmax_traces-1}')
         
         # trace name selection
         self.updateTraceNameSelectionList()
@@ -401,7 +395,7 @@ class pyCLAMP(QWidget):
     def updateChannelPlots(self):
         # visible episodes
         n_episodes = self.data.numEpisodes()
-        if self._episodeSelectionBoxAction.isVisible():
+        if self._episodeSelectionToolbarAction.isVisible():
             visibleEpisodes = self._episodeSelectionBox.values()
         else:
             visibleEpisodes = np.arange(n_episodes)
@@ -651,6 +645,7 @@ class pyCLAMP(QWidget):
 
         dlg = QDialog()
         form = QFormLayout(dlg)
+        form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
 
         textEdit = QTextEdit()
         textEdit.setPlainText(notes)
@@ -816,10 +811,16 @@ class ListWidget(QListWidget):
     """ QListWidget that resizes to fit content. """
     def __init__(self,  *args, **kwargs):
         QListWidget.__init__(self,  *args, **kwargs)
+        self.sizePolicy().setHorizontalStretch(1)
+        self.sizePolicy().setVerticalStretch(1)
+        self.sizePolicy().setHorizontalPolicy(QSizePolicy.Expanding)
+        self.sizePolicy().setVerticalPolicy(QSizePolicy.Expanding)
+        self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.setResizeMode(QListView.ResizeMode.Adjust)
     
     def sizeHint(self):
         n_items = self.model().rowCount()
-        width = self.sizeHintForColumn(0)
+        width = max(150, self.sizeHintForColumn(0))
         height = int(self.sizeHintForRow(0) * (n_items + 0.5))
         return QSize(width, height)
     
@@ -2396,25 +2397,25 @@ if __name__ == '__main__':
     # Create widget
     ui = newPyClampWindow()
 
-    # ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,2,3,100)))
-    # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['Name'] = 'test'
-    # ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['YZero'] = 0.5
-    # ui.data.DATA['Episodes'][0]['Channels'][0]['Events'] = [
-    #     {
-    #         'Type': 'Event',
-    #         'Group': 'group',
-    #         'XStart': 50,
-    #         'XStop': 60,
-    #         'Text': 'event 1'
-    #     },
-    #     {
-    #         'Type': 'Event',
-    #         'Group': 'group',
-    #         'XStart': 20,
-    #         'Text': 'event 2'
-    #     }
-    # ]
-    # ui.data.refreshParents()
+    ui.data.DATA = ui.data.formatData(x=None, y=np.random.random((5,9,3,100)))
+    ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['Name'] = 'test'
+    ui.data.DATA['Episodes'][0]['Channels'][0]['Traces'][0]['YZero'] = 0.5
+    ui.data.DATA['Episodes'][0]['Channels'][0]['Events'] = [
+        {
+            'Type': 'Event',
+            'Group': 'group',
+            'XStart': 50,
+            'XStop': 60,
+            'Text': 'event 1'
+        },
+        {
+            'Type': 'Event',
+            'Group': 'group',
+            'XStart': 20,
+            'Text': 'event 2'
+        }
+    ]
+    ui.data.refreshParents()
 
     # ui.dump('DATA.txt')
 
