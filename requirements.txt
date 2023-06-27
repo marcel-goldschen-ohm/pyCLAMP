@@ -1,0 +1,7 @@
+numpy
+scipy
+lmfit
+PyQt6
+pyqtgraph
+qtawesome
+pyABF

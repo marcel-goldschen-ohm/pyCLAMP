@@ -23,21 +23,21 @@ As of now you still need a different program to aquire data anyway, and as pyCLA
 # Install pyCLAMP
 `pip install pyclamp`
 
-This should install everything you need including all requirements.
+This should install everything you need including all [requirements](requirements.txt).
 
 ## Requirements
 * [numpy](https://numpy.org)
 * [scipy](https://scipy.org)
-* [lmfit](https://lmfit.github.io/lmfit-py/)
-* [PyQt6](https://pypi.org/project/PyQt6/)
-* [pyqtgraph](https://www.pyqtgraph.org)
-* [qtawesome](https://github.com/spyder-ide/qtawesome)
-* [pyABF](https://swharden.com/pyabf/)
+* [lmfit](https://lmfit.github.io/lmfit-py/) - for curve fitting
+* [PyQt6](https://pypi.org/project/PyQt6/) - for the UI
+* [pyqtgraph](https://www.pyqtgraph.org) - for plotting
+* [qtawesome](https://github.com/spyder-ide/qtawesome) - for icons
+* [pyABF](https://swharden.com/pyabf/) - for ABF files
 
 # Run the pyCLAMP UI
 `python -m pyclamp`
 
-Once the UI appears, open the menu (button in the upper left corner) and select `File -> Open` or `File -> Import ...`
+This will launch the UI. To load some data open the menu (button in the upper left corner) and select `File -> Open` or `File -> Import ...`
 
 # Data file compatibility
 | File Type | Import | Export |
