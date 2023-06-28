@@ -1,6 +1,9 @@
 # pyCLAMP
 Time series recordings analysis in Python with UI similar to pCLAMP.
 
+# !!! WARNING !!!
+Data structure is under conversion to utilize Zarr format. This may introduce breaking changes in the current version of pyCLAMP.
+
 # What is pyCLAMP for?
 pyCLAMP is generally useful for analysis of any *(x,y)* data series that may be recorded in multiple channels and in respose to repeated episodes or triggered recording periods.
 
@@ -151,7 +154,10 @@ References from child to parent dict objects are stored separately from the data
 The data structure is serialized/deserialized to/from MATLAB `.mat` file format so that it can be easily loaded in MATLAB if desired. Nested dicts and lists of dicts in Python become nested structs and structarrays in MATLAB. To load in python see the function `DataModel.loadmat()` which uses `scipy.loadmat()` to load the data from a previously serialized `.mat` file. The load function also strips the data of uneeded MATLAB-specific tokens (which is nice but does not affect the actual data) and ensures that certain objects are lists of dicts rather than a simple dict. The latter is required for the UI to function correctly, but it is NOT required to explore the dataset and understand its structure or access its contents.
 
 # TODO
-- use HDF5 data format instead of MATLAB format?
+- !!! Use Zarr data format. This will be a major conversion of the data structure.
+- plots into scrollarea in case lots of channels
+- set XZero
+- group episodes (e.g., episodes are repeated series of increasing stimulus pulses)
 - auto detect and fix single dict -> list of dict where necessary
     - anyway to ensure this via scipy.loadmat? probably not though
 - autoscale all plots
